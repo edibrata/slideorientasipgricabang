@@ -58,7 +58,7 @@
             animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             background: white;
             box-sizing: border-box;
-            overflow-y: auto; /* Memungkinkan scroll jika konten meluap di mobile */
+            overflow-y: auto;
         }
 
         @media (min-width: 768px) {
@@ -540,23 +540,25 @@
         </div>
     </div>
 
-    <!-- SLIDE 2: BAHAN DISKUSI (QR CODE) -->
+    <!-- SLIDE 2: BAHAN DISKUSI (QR CODE DENGAN LINK LANGSUNG) -->
     <div class="slide">
-        <div class="text-center w-full max-w-4xl hover-expand p-4 md:p-8 border-2 border-slate-100 rounded-[2rem] md:rounded-[3rem] bg-slate-50 mx-4" onclick="openCustomModal('QR CODE MATERI', 'Silakan pindai kode ini untuk mengakses dokumen diskusi digital secara langsung.')">
-            <h2 class="text-3xl md:text-5xl font-black text-slate-900 mb-4 uppercase tracking-tight">BAHAN DISKUSI</h2>
-            <div class="bg-white p-4 rounded-xl md:rounded-[2rem] shadow-xl inline-block mb-4">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=https://edibrata.github.io/orientasipgricabang/" 
-                     alt="QR Code" 
-                     class="w-48 h-48 md:w-80 md:h-80 mx-auto">
+        <a href="https://edibrata.github.io/orientasipgricabang/" target="_blank" class="block w-full max-w-4xl no-underline text-current px-4">
+            <div class="text-center hover-expand p-4 md:p-8 border-2 border-slate-100 rounded-[2rem] md:rounded-[3rem] bg-slate-50 cursor-pointer">
+                <h2 class="text-3xl md:text-5xl font-black text-slate-900 mb-4 uppercase tracking-tight">BAHAN DISKUSI</h2>
+                <div class="bg-white p-4 rounded-xl md:rounded-[2rem] shadow-xl inline-block mb-4">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=https://edibrata.github.io/orientasipgricabang/" 
+                         alt="QR Code" 
+                         class="w-48 h-48 md:w-80 md:h-80 mx-auto">
+                </div>
+                <div class="space-y-2">
+                    <p class="text-xl md:text-2xl font-bold text-red-600 uppercase">Klik atau Scan QR Code</p>
+                    <div class="h-1 w-20 md:w-32 bg-slate-200 mx-auto rounded-full"></div>
+                    <p class="text-sm md:text-lg font-semibold text-slate-500 leading-relaxed">
+                        Akses bahan diskusi melalui tautan eksternal.
+                    </p>
+                </div>
             </div>
-            <div class="space-y-2">
-                <p class="text-xl md:text-2xl font-bold text-red-600 uppercase">Scan QR Code Materi</p>
-                <div class="h-1 w-20 md:w-32 bg-slate-200 mx-auto rounded-full"></div>
-                <p class="text-sm md:text-lg font-semibold text-slate-500 leading-relaxed">
-                    Akses bahan melalui perangkat Anda.
-                </p>
-            </div>
-        </div>
+        </a>
     </div>
 
     <!-- SLIDE 3: ESENSI JATI DIRI -->
@@ -773,7 +775,7 @@
                 <div class="etape-number">ETAPE 5</div>
                 <div class="year-title text-red-600">2030</div>
                 <h5>TEMA: LEGACY</h5>
-                <p>• Koncab XXIII<br>• LPJ Digital<br>• Buku Jejak Bakti</p>
+                <p>• Konferensi Cabang XXIII<br>• LPJ Digital<br>• Buku Jejak Bakti</p>
             </div>
         </div>
     </div>
