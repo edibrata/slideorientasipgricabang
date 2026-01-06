@@ -27,7 +27,6 @@
             line-height: 1.15;
         }
 
-        /* Menghilangkan style miring secara global sesuai permintaan sebelumnya */
         * { font-style: normal !important; }
 
         /* Navigation Overlay Zones */
@@ -53,12 +52,21 @@
             display: none;
             height: 100vh;
             width: 100vw;
-            padding: 1.5rem 3rem;
+            padding: 1rem;
             position: relative;
             z-index: 10;
             animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             background: white;
             box-sizing: border-box;
+            overflow-y: auto; /* Memungkinkan scroll jika konten meluap di mobile */
+        }
+
+        @media (min-width: 768px) {
+            .slide {
+                padding: 1.5rem 3rem;
+                overflow: hidden;
+                display: none;
+            }
         }
 
         .slide.active {
@@ -93,11 +101,15 @@
         }
 
         .control-btn {
-            width: 2.8rem; height: 2.8rem;
+            width: 2.5rem; height: 2.5rem;
             display: flex; align-items: center; justify-content: center;
             background: #ffffff; border: 2px solid var(--pgri-border);
             border-radius: 0.75rem; color: var(--pgri-slate);
             cursor: pointer;
+        }
+
+        @media (min-width: 768px) {
+            .control-btn { width: 2.8rem; height: 2.8rem; }
         }
 
         /* Hover & Focus Animation for Cards */
@@ -105,26 +117,81 @@
             transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
             position: relative;
             z-index: 1;
+            cursor: pointer;
         }
         .hover-expand:hover {
-            transform: scale(1.08);
+            transform: scale(1.05);
             z-index: 50;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
             border-color: var(--pgri-red) !important;
         }
 
+        /* Modal Styles */
+        #modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        #modal-content {
+            background: white;
+            max-width: 800px;
+            width: 100%;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            position: relative;
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.5);
+            animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @media (min-width: 768px) {
+            #modal-content {
+                border-radius: 3rem;
+                padding: 3rem;
+            }
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes modalPop { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+
+        #modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 2.5rem;
+            height: 2.5rem;
+            background: var(--pgri-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--pgri-slate);
+            transition: all 0.2s ease;
+        }
+        #modal-close:hover { background: var(--pgri-red); color: white; }
+
         /* Card Block Styles */
         .grid-container {
             display: grid;
             width: 100%;
-            gap: 1rem;
+            gap: 0.75rem;
         }
 
         .card-pilar-block {
             background: #ffffff;
             border: 2px solid var(--pgri-border);
-            padding: 1rem;
-            border-radius: 1.5rem;
+            padding: 0.75rem 1rem;
+            border-radius: 1rem;
             display: flex;
             flex-direction: column;
         }
@@ -132,15 +199,15 @@
         .card-pilar-block h4 {
             color: var(--pgri-red);
             font-weight: 800;
-            font-size: 1.2rem;
+            font-size: 1rem;
             text-transform: uppercase;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
             border-bottom: 1px solid var(--pgri-border);
-            padding-bottom: 0.3rem;
+            padding-bottom: 0.2rem;
         }
 
         .card-pilar-block ul {
-            font-size: 0.95rem;
+            font-size: 0.8rem;
             font-weight: 700;
             color: var(--pgri-slate);
             list-style: none;
@@ -148,8 +215,13 @@
             margin: 0;
         }
 
+        @media (min-width: 768px) {
+            .card-pilar-block h4 { font-size: 1.2rem; }
+            .card-pilar-block ul { font-size: 0.95rem; }
+        }
+
         .card-pilar-block li {
-            margin-bottom: 0.3rem;
+            margin-bottom: 0.2rem;
             position: relative;
             padding-left: 1rem;
         }
@@ -165,7 +237,7 @@
             position: relative;
             width: 100%;
             max-width: 1200px;
-            padding: 40px 0;
+            padding: 20px 0;
             margin: 0 auto;
         }
         
@@ -174,11 +246,16 @@
             top: 50%;
             left: 5%;
             right: 5%;
-            height: 6px;
+            height: 4px;
             background: #f1f5f9;
             transform: translateY(-50%);
             z-index: 1;
             border-radius: 10px;
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+            .roadmap-line { display: block; }
         }
         
         .roadmap-progress {
@@ -186,57 +263,99 @@
             top: 50%;
             left: 5%;
             width: 20%;
-            height: 6px;
+            height: 4px;
             background: var(--pgri-red);
             transform: translateY(-50%);
             z-index: 2;
             border-radius: 10px;
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+            .roadmap-progress { display: block; }
         }
 
         .roadmap-items {
             position: relative;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            gap: 1rem;
             z-index: 3;
+        }
+
+        @media (min-width: 768px) {
+            .roadmap-items {
+                flex-direction: row;
+                justify-content: space-between;
+                gap: 0;
+            }
         }
 
         .roadmap-node {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
-            width: 180px;
+            width: 100%;
             cursor: pointer;
+            gap: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .roadmap-node {
+                flex-direction: column;
+                width: 180px;
+                gap: 0;
+            }
         }
 
         .node-circle {
-            width: 65px;
-            height: 65px;
+            width: 45px;
+            height: 45px;
             background: #fff;
-            border: 5px solid #e2e8f0;
+            border: 3px solid #e2e8f0;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 900;
-            font-size: 1.3rem;
+            font-size: 1rem;
             color: #94a3b8;
-            margin: 15px 0;
+            margin: 0;
             transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        @media (min-width: 768px) {
+            .node-circle {
+                width: 65px;
+                height: 65px;
+                border: 5px solid #e2e8f0;
+                font-size: 1.3rem;
+                margin: 15px 0;
+            }
         }
 
         .roadmap-node.active .node-circle {
             border-color: var(--pgri-red);
             color: var(--pgri-red);
-            box-shadow: 0 0 25px rgba(225, 29, 72, 0.25);
+            box-shadow: 0 0 15px rgba(225, 29, 72, 0.2);
         }
 
         .node-content {
-            text-align: center;
-            padding: 12px;
-            border-radius: 1.25rem;
+            text-align: left;
+            padding: 8px 12px;
+            border-radius: 1rem;
             background: #f8fafc;
             width: 100%;
             transition: all 0.3s ease;
+        }
+
+        @media (min-width: 768px) {
+            .node-content {
+                text-align: center;
+                padding: 12px;
+                border-radius: 1.25rem;
+            }
         }
 
         .roadmap-node:hover .node-content {
@@ -245,25 +364,37 @@
         }
 
         .node-content h4 {
-            font-size: 1.1rem;
+            font-size: 0.9rem;
             font-weight: 800;
             text-transform: uppercase;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
 
         .node-content p {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             font-weight: 700;
             color: #64748b;
         }
 
-        /* Etape / Stage Styles (Slide 10) */
+        @media (min-width: 768px) {
+            .node-content h4 { font-size: 1.1rem; }
+            .node-content p { font-size: 0.8rem; }
+        }
+
+        /* Etape / Stage Styles (Slide 11) */
         .etape-container {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 1rem;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
             width: 100%;
             position: relative;
+        }
+
+        @media (min-width: 768px) {
+            .etape-container {
+                grid-template-columns: repeat(5, 1fr);
+                gap: 1rem;
+            }
         }
 
         .etape-connector {
@@ -274,62 +405,91 @@
             height: 2px;
             background: #cbd5e1;
             z-index: 0;
-            display: flex;
+            display: none;
             justify-content: space-around;
+        }
+
+        @media (min-width: 768px) {
+            .etape-connector { display: flex; }
         }
 
         .program-card {
             background: var(--pgri-light);
-            border-radius: 1.5rem;
+            border-radius: 1.25rem;
             padding: 1rem;
             border: 2px solid transparent;
-            border-top: 6px solid var(--pgri-red);
+            border-top: 4px solid var(--pgri-red);
             position: relative;
             z-index: 2;
         }
 
-        .program-card.secondary {
-            border-top-color: var(--pgri-dark);
+        @media (min-width: 768px) {
+            .program-card {
+                border-radius: 1.5rem;
+                border-top-width: 6px;
+            }
         }
+
+        .program-card.secondary { border-top-color: var(--pgri-dark); }
 
         .etape-number {
             position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
+            top: -15px;
+            left: 1.5rem;
             background: white;
-            padding: 0.2rem 1rem;
+            padding: 0.1rem 0.8rem;
             border: 2px solid var(--pgri-border);
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             font-weight: 900;
             color: var(--pgri-slate);
         }
 
+        @media (min-width: 768px) {
+            .etape-number {
+                top: -20px;
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 0.8rem;
+            }
+        }
+
         .program-card h5 {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 800;
             text-transform: uppercase;
             color: var(--pgri-red);
             margin-bottom: 0.5rem;
-            text-align: center;
+            text-align: left;
+        }
+
+        @media (min-width: 768px) {
+            .program-card h5 { text-align: center; font-size: 0.85rem; }
         }
         
         .secondary h5 { color: var(--pgri-dark); }
 
         .program-card p {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 700;
             line-height: 1.4;
             color: #334155;
         }
 
+        @media (min-width: 768px) {
+            .program-card p { font-size: 0.75rem; }
+        }
+
         .year-title {
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: 900;
             color: var(--pgri-dark);
-            text-align: center;
+            text-align: left;
             margin-bottom: 0.25rem;
+        }
+
+        @media (min-width: 768px) {
+            .year-title { font-size: 2rem; text-align: center; }
         }
     </style>
 </head>
@@ -340,6 +500,16 @@
         <div class="nav-zone nav-zone-right" onclick="nextSlide()"></div>
     </div>
 
+    <!-- Modal Overlay -->
+    <div id="modal-overlay" onclick="closeModal()">
+        <div id="modal-content" onclick="event.stopPropagation()">
+            <div id="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></div>
+            <div id="modal-body" class="text-center">
+                <!-- Konten modal akan diinjeksikan oleh JS -->
+            </div>
+        </div>
+    </div>
+
     <div class="progress-container">
         <div class="progress-bar" id="progress"></div>
     </div>
@@ -347,45 +517,43 @@
     <!-- SLIDE 0: COVER -->
     <div class="slide active">
         <div class="text-center w-full">
-            <img src="https://raw.githubusercontent.com/edibrata/image/main/Logo%20PGRI%20Official.png" alt="Logo PGRI" class="h-72 mx-auto mb-6">
-            <h1 class="text-5xl md:text-6xl font-black text-slate-900 mb-2 uppercase leading-none tracking-tighter whitespace-nowrap">ORIENTASI PENGURUS CABANG</h1>
-            <p class="text-xl md:text-2xl font-bold text-red-600 tracking-[0.4em] uppercase mb-4">Masa Bakti XXIII (2025-2030)</p>
-            <div class="h-1.5 w-40 bg-slate-900 mx-auto mb-4"></div>
-            <h2 class="text-3xl md:text-4xl font-black text-slate-800 uppercase tracking-widest leading-none">PGRI KABUPATEN PANDEGLANG</h2>
+            <img src="https://raw.githubusercontent.com/edibrata/image/main/Logo%20PGRI%20Official.png" alt="Logo PGRI" class="h-40 md:h-72 mx-auto mb-6">
+            <h1 class="text-3xl md:text-6xl font-black text-slate-900 mb-2 uppercase leading-none tracking-tighter md:whitespace-nowrap px-4">ORIENTASI PENGURUS CABANG</h1>
+            <p class="text-lg md:text-2xl font-bold text-red-600 tracking-[0.2em] md:tracking-[0.4em] uppercase mb-4">(2025-2030)</p>
+            <div class="h-1 w-20 md:w-40 bg-slate-900 mx-auto mb-4"></div>
+            <h2 class="text-xl md:text-4xl font-black text-slate-800 uppercase tracking-widest px-4">PGRI KABUPATEN PANDEGLANG</h2>
         </div>
     </div>
 
-    <!-- SLIDE 1: IDENTITAS FASILITATOR -->
+    <!-- SLIDE 1: IDENTITAS -->
     <div class="slide">
-        <div class="flex flex-col items-center text-center">
+        <div class="flex flex-col items-center text-center px-4">
             <img src="https://raw.githubusercontent.com/edibrata/image/main/Foto%20Konkerprov/Edi%20Brata.jpeg" 
                  onerror="this.src='https://ui-avatars.com/api/?name=Edi+Brata&size=300&background=e11d48&color=fff'" 
-                 alt="Edi Brata" class="w-56 h-56 rounded-full border-8 border-slate-50 shadow-xl mb-4 object-cover">
-            <h1 class="text-6xl font-black text-slate-900 mb-2 uppercase leading-none">Edi Brata</h1>
-            <p class="text-lg font-bold text-slate-600 uppercase tracking-tight mb-2">
+                 alt="Edi Brata" class="w-40 h-40 md:w-56 md:h-56 rounded-full border-4 md:border-8 border-slate-50 shadow-xl mb-4 object-cover">
+            <h1 class="text-4xl md:text-6xl font-black text-slate-900 mb-2 uppercase leading-none">Edi Brata</h1>
+            <p class="text-sm md:text-lg font-bold text-slate-600 uppercase tracking-tight mb-2 max-w-md">
                 Kabid Keanggotaan dan Digitalisasi Organisasi - Ketua DE APKS
             </p>
             <div class="h-1 w-24 bg-red-600 mx-auto mb-2"></div>
-            <p class="text-2xl font-black text-slate-800 uppercase tracking-widest leading-none">PGRI Kabupaten Pandeglang</p>
+            <p class="text-lg md:text-2xl font-black text-slate-800 uppercase tracking-widest leading-none">PGRI Kabupaten Pandeglang</p>
         </div>
     </div>
 
     <!-- SLIDE 2: BAHAN DISKUSI (QR CODE) -->
     <div class="slide">
-        <div class="text-center w-full max-w-4xl hover-expand p-8 border-2 border-slate-100 rounded-[3rem] bg-slate-50">
-            <h2 class="text-5xl font-black text-slate-900 mb-6 uppercase tracking-tight">BAHAN DISKUSI</h2>
-            <div class="bg-white p-6 rounded-[2rem] shadow-xl inline-block mb-6">
-                <!-- QR Code Generator API -->
+        <div class="text-center w-full max-w-4xl hover-expand p-4 md:p-8 border-2 border-slate-100 rounded-[2rem] md:rounded-[3rem] bg-slate-50 mx-4" onclick="openCustomModal('QR CODE MATERI', 'Silakan pindai kode ini untuk mengakses dokumen diskusi digital secara langsung.')">
+            <h2 class="text-3xl md:text-5xl font-black text-slate-900 mb-4 uppercase tracking-tight">BAHAN DISKUSI</h2>
+            <div class="bg-white p-4 rounded-xl md:rounded-[2rem] shadow-xl inline-block mb-4">
                 <img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=https://edibrata.github.io/orientasipgricabang/" 
-                     alt="QR Code Materi Diskusi" 
-                     class="w-64 h-64 md:w-80 md:h-80 mx-auto">
+                     alt="QR Code" 
+                     class="w-48 h-48 md:w-80 md:h-80 mx-auto">
             </div>
-            <div class="space-y-4">
-                <p class="text-2xl font-bold text-red-600 uppercase">Scan QR Code Materi</p>
-                <div class="h-1 w-32 bg-slate-200 mx-auto rounded-full"></div>
-                <p class="text-lg font-semibold text-slate-500 leading-relaxed">
-                    Silakan pindaian kode di atas untuk mengakses <br>
-                    dokumen bahan diskusi melalui perangkat Anda.
+            <div class="space-y-2">
+                <p class="text-xl md:text-2xl font-bold text-red-600 uppercase">Scan QR Code Materi</p>
+                <div class="h-1 w-20 md:w-32 bg-slate-200 mx-auto rounded-full"></div>
+                <p class="text-sm md:text-lg font-semibold text-slate-500 leading-relaxed">
+                    Akses bahan melalui perangkat Anda.
                 </p>
             </div>
         </div>
@@ -393,261 +561,249 @@
 
     <!-- SLIDE 3: ESENSI JATI DIRI -->
     <div class="slide">
-        <h2 class="text-4xl font-black uppercase text-slate-900 mb-6 leading-none">01. Esensi Jati Diri</h2>
-        <div class="grid grid-cols-2 gap-4 w-full max-w-4xl">
-            <div class="bg-white border-2 border-slate-200 p-6 rounded-2xl flex items-center gap-6 shadow-sm hover-expand">
-                <i class="fas fa-award text-5xl text-red-600"></i><span class="text-3xl font-black">PROFESI</span>
+        <h2 class="text-3xl md:text-4xl font-black uppercase text-slate-900 mb-6 leading-none text-center">01. Esensi Jati Diri</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-4xl px-4">
+            <div class="bg-white border-2 border-slate-200 p-4 md:p-6 rounded-xl md:rounded-2xl flex items-center gap-4 md:gap-6 shadow-sm hover-expand" onclick="openCustomModal('PROFESI', 'Menjaga mutu guru, kode etik, dan kemartabatan pendidik.')">
+                <i class="fas fa-award text-3xl md:text-5xl text-red-600"></i><span class="text-xl md:text-3xl font-black">PROFESI</span>
             </div>
-            <div class="bg-white border-2 border-slate-200 p-6 rounded-2xl flex items-center gap-6 shadow-sm hover-expand">
-                <i class="fas fa-fist-raised text-5xl text-red-600"></i><span class="text-3xl font-black">PERJUANGAN</span>
+            <div class="bg-white border-2 border-slate-200 p-4 md:p-6 rounded-xl md:rounded-2xl flex items-center gap-4 md:gap-6 shadow-sm hover-expand" onclick="openCustomModal('PERJUANGAN', 'Mengawal kebijakan pendidikan demi kesejahteraan guru.')">
+                <i class="fas fa-fist-raised text-3xl md:text-5xl text-red-600"></i><span class="text-xl md:text-3xl font-black">PERJUANGAN</span>
             </div>
-            <div class="bg-white border-2 border-slate-200 p-6 rounded-2xl flex items-center gap-6 shadow-sm hover-expand">
-                <i class="fas fa-users text-5xl text-red-600"></i><span class="text-3xl font-black">SERIKAT PEKERJA</span>
+            <div class="bg-white border-2 border-slate-200 p-4 md:p-6 rounded-xl md:rounded-2xl flex items-center gap-4 md:gap-6 shadow-sm hover-expand" onclick="openCustomModal('SERIKAT PEKERJA', 'Wadah perjuangan hak normatif dan perlindungan kerja.')">
+                <i class="fas fa-users text-3xl md:text-5xl text-red-600"></i><span class="text-xl md:text-3xl font-black text-left leading-none">SERIKAT PEKERJA</span>
             </div>
-            <div class="bg-white border-2 border-slate-200 p-6 rounded-2xl flex items-center gap-6 shadow-sm hover-expand">
-                <i class="fas fa-shield-alt text-5xl text-amber-500"></i><span class="text-3xl font-black">INDEPENDENSI</span>
+            <div class="bg-white border-2 border-slate-200 p-4 md:p-6 rounded-xl md:rounded-2xl flex items-center gap-4 md:gap-6 shadow-sm hover-expand" onclick="openCustomModal('INDEPENDENSI', 'Mandiri dari kepentingan politik praktis.')">
+                <i class="fas fa-shield-alt text-3xl md:text-5xl text-amber-500"></i><span class="text-xl md:text-3xl font-black">INDEPENDENSI</span>
             </div>
         </div>
     </div>
 
     <!-- SLIDE 4: KOLEKTIF KOLEGIAL -->
     <div class="slide">
-        <h2 class="text-4xl font-black text-center mb-6 uppercase leading-tight">Kepemimpinan <span class="text-red-600">Kolektif-Kolegial</span></h2>
-        <div class="flex justify-center gap-10 w-full max-w-4xl">
-            <div class="text-center hover-expand p-4 rounded-3xl">
-                <div class="w-40 h-40 bg-slate-900 text-white rounded-3xl flex items-center justify-center mx-auto mb-4 text-5xl shadow-lg"><i class="fas fa-users-cog"></i></div>
-                <p class="text-2xl font-black uppercase">Pimpinan Utama</p>
+        <h2 class="text-3xl md:text-4xl font-black text-center mb-6 uppercase leading-tight px-4">Kepemimpinan <br class="md:hidden"><span class="text-red-600">Kolektif-Kolegial</span></h2>
+        <div class="flex flex-col md:flex-row justify-center gap-6 md:gap-10 w-full max-w-4xl px-4">
+            <div class="text-center hover-expand p-4 rounded-3xl" onclick="openCustomModal('PIMPINAN UTAMA', 'Tanggung jawab dipikul bersama oleh pengurus harian.')">
+                <div class="w-32 h-32 md:w-40 md:h-40 bg-slate-900 text-white rounded-2xl md:rounded-3xl flex items-center justify-center mx-auto mb-4 text-4xl md:text-5xl shadow-lg"><i class="fas fa-users-cog"></i></div>
+                <p class="text-xl md:text-2xl font-black uppercase">Pimpinan Utama</p>
             </div>
-            <div class="text-center hover-expand p-4 rounded-3xl">
-                <div class="w-40 h-40 bg-red-600 text-white rounded-3xl flex items-center justify-center mx-auto mb-4 text-5xl shadow-lg"><i class="fas fa-handshake"></i></div>
-                <p class="text-2xl font-black uppercase">Hasil Pleno</p>
+            <div class="text-center hover-expand p-4 rounded-3xl" onclick="openCustomModal('HASIL PLENO', 'Keputusan diambil melalui musyawarah mufakat.')">
+                <div class="w-32 h-32 md:w-40 md:h-40 bg-red-600 text-white rounded-2xl md:rounded-3xl flex items-center justify-center mx-auto mb-4 text-4xl md:text-5xl shadow-lg"><i class="fas fa-handshake"></i></div>
+                <p class="text-xl md:text-2xl font-black uppercase">Hasil Pleno</p>
             </div>
         </div>
     </div>
 
     <!-- SLIDE 5: KEDAULATAN ANGGOTA -->
     <div class="slide">
-        <h2 class="text-4xl font-black text-center mb-6 uppercase leading-none">03. Kedaulatan Anggota</h2>
-        <div class="grid grid-cols-3 gap-6 w-full max-w-5xl">
-            <div class="bg-white border-2 border-slate-200 p-8 rounded-3xl text-center shadow-sm hover-expand">
-                <i class="fas fa-user-shield text-5xl text-red-600 mb-4"></i>
-                <h3 class="text-xl font-black uppercase leading-none">Aset Utama</h3>
+        <h2 class="text-3xl md:text-4xl font-black text-center mb-6 uppercase leading-none px-4">03. Kedaulatan Anggota</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 w-full max-w-5xl px-4">
+            <div class="bg-white border-2 border-slate-200 p-6 md:p-8 rounded-2xl md:rounded-3xl text-center shadow-sm hover-expand" onclick="openCustomModal('ASET UTAMA', 'Anggota adalah aset terbesar organisasi.')">
+                <i class="fas fa-user-shield text-4xl md:text-5xl text-red-600 mb-4"></i>
+                <h3 class="text-lg md:text-xl font-black uppercase leading-none">Aset Utama</h3>
             </div>
-            <div class="bg-white border-2 border-slate-200 p-8 rounded-3xl text-center shadow-sm hover-expand">
-                <i class="fas fa-star text-5xl text-red-600 mb-4"></i>
-                <h3 class="text-xl font-black uppercase leading-none">Layanan Nyata</h3>
+            <div class="bg-white border-2 border-slate-200 p-6 md:p-8 rounded-2xl md:rounded-3xl text-center shadow-sm hover-expand" onclick="openCustomModal('LAYANAN NYATA', 'Program kerja harus bermanfaat nyata bagi karir guru.')">
+                <i class="fas fa-star text-4xl md:text-5xl text-red-600 mb-4"></i>
+                <h3 class="text-lg md:text-xl font-black uppercase leading-none">Layanan Nyata</h3>
             </div>
-            <div class="bg-white border-2 border-slate-200 p-8 rounded-3xl text-center shadow-sm hover-expand">
-                <i class="fas fa-database text-5xl text-red-600 mb-4"></i>
-                <h3 class="text-xl font-black uppercase leading-none">Data Digital</h3>
+            <div class="bg-white border-2 border-slate-200 p-6 md:p-8 rounded-2xl md:rounded-3xl text-center shadow-sm hover-expand" onclick="openCustomModal('DATA DIGITAL', 'SIK memastikan hak anggota terlindungi.')">
+                <i class="fas fa-database text-4xl md:text-5xl text-red-600 mb-4"></i>
+                <h3 class="text-lg md:text-xl font-black uppercase leading-none">Data Digital</h3>
             </div>
         </div>
     </div>
 
     <!-- SLIDE 6: SMART -->
     <div class="slide">
-        <div class="bg-slate-900 text-white px-10 py-4 rounded-2xl mb-8 shadow-xl">
-            <h2 class="text-4xl font-black uppercase tracking-tight">Program Kerja SMART</h2>
+        <div class="bg-slate-900 text-white px-8 md:px-10 py-4 rounded-xl md:rounded-2xl mb-8 shadow-xl">
+            <h2 class="text-2xl md:text-4xl font-black uppercase tracking-tight text-center">Program Kerja SMART</h2>
         </div>
-        <div class="flex justify-center gap-4">
-            <div class="w-28 h-28 bg-slate-100 rounded-2xl flex items-center justify-center text-5xl font-black hover-expand">S</div>
-            <div class="w-28 h-28 bg-slate-100 rounded-2xl flex items-center justify-center text-5xl font-black hover-expand">M</div>
-            <div class="w-28 h-28 bg-slate-100 rounded-2xl flex items-center justify-center text-5xl font-black hover-expand">A</div>
-            <div class="w-28 h-28 bg-slate-100 rounded-2xl flex items-center justify-center text-5xl font-black hover-expand">R</div>
-            <div class="w-28 h-28 bg-red-600 text-white rounded-2xl flex items-center justify-center text-5xl font-black shadow-lg hover-expand">T</div>
+        <div class="flex flex-wrap justify-center gap-3 md:gap-4 px-4">
+            <div class="w-16 h-16 md:w-28 md:h-28 bg-slate-100 rounded-lg md:rounded-2xl flex items-center justify-center text-3xl md:text-5xl font-black hover-expand" onclick="openCustomModal('SPECIFIC', 'Tujuan harus jelas dan terperinci.')">S</div>
+            <div class="w-16 h-16 md:w-28 md:h-28 bg-slate-100 rounded-lg md:rounded-2xl flex items-center justify-center text-3xl md:text-5xl font-black hover-expand" onclick="openCustomModal('MEASURABLE', 'Indikator keberhasilan terukur.')">M</div>
+            <div class="w-16 h-16 md:w-28 md:h-28 bg-slate-100 rounded-lg md:rounded-2xl flex items-center justify-center text-3xl md:text-5xl font-black hover-expand" onclick="openCustomModal('ACHIEVABLE', 'Rencana realistis sesuai kapasitas.')">A</div>
+            <div class="w-16 h-16 md:w-28 md:h-28 bg-slate-100 rounded-lg md:rounded-2xl flex items-center justify-center text-3xl md:text-5xl font-black hover-expand" onclick="openCustomModal('RELEVANT', 'Selaras visi dan kebutuhan anggota.')">R</div>
+            <div class="w-16 h-16 md:w-28 md:h-28 bg-red-600 text-white rounded-lg md:rounded-2xl flex items-center justify-center text-3xl md:text-5xl font-black shadow-lg hover-expand" onclick="openCustomModal('TIME-BOUND', 'Batas waktu penyelesaian yang jelas.')">T</div>
         </div>
     </div>
 
     <!-- SLIDE 7: JUDUL GBRK -->
     <div class="slide">
-        <div class="text-center">
-            <h3 class="text-2xl font-bold text-slate-400 uppercase tracking-[0.3em] mb-2">Master Plan</h3>
-            <h1 class="text-6xl md:text-7xl font-black text-slate-900 uppercase leading-none tracking-tighter">MODEL GBRK <br><span class="text-red-600">PGRI CABANG</span></h1>
-            <div class="h-3 w-64 bg-red-600 mx-auto mt-6 rounded-full"></div>
-            <p class="mt-4 text-xl font-black text-slate-500 uppercase tracking-widest">MASA BAKTI XXIII (2025-2030)</p>
+        <div class="text-center px-4">
+            <h3 class="text-xl md:text-2xl font-bold text-slate-400 uppercase tracking-[0.2em] md:tracking-[0.3em] mb-2">Master Plan</h3>
+            <h1 class="text-5xl md:text-7xl font-black text-slate-900 uppercase leading-none tracking-tighter">MODEL GBRK <br><span class="text-red-600">PGRI CABANG</span></h1>
+            <div class="h-2 md:h-3 w-40 md:w-64 bg-red-600 mx-auto mt-6 rounded-full"></div>
+            <p class="mt-4 text-lg md:text-xl font-black text-slate-500 uppercase tracking-widest">(2025-2030)</p>
         </div>
     </div>
 
     <!-- SLIDE 8: VISI STRATEGIS -->
     <div class="slide">
-        <h2 class="text-3xl font-black text-red-600 uppercase mb-4 border-b-4 border-red-600 pb-2 inline-block">I. Visi Strategis</h2>
-        <div class="max-w-5xl px-4">
-            <h3 class="text-2xl md:text-3xl font-extrabold text-slate-900 leading-tight text-center italic">
+        <h2 class="text-2xl md:text-3xl font-black text-red-600 uppercase mb-4 border-b-4 border-red-600 pb-2 inline-block">I. Visi Strategis</h2>
+        <div class="max-w-5xl px-6">
+            <h3 class="text-xl md:text-3xl font-extrabold text-slate-900 leading-snug md:leading-tight text-center italic">
                 "Mewujudkan PGRI Cabang sebagai organisasi profesi yang modern, mandiri, adaptif, dan berwibawa melalui <span class="text-red-600 font-black">supremasi konstitusi</span>, kemandirian <span class="text-red-600 font-black">ekonomi anggota</span>, dan transformasi <span class="text-red-600 font-black">tata kelola digital</span> serta penguatan <span class="text-red-600 font-black">kompetensi pendidik</span> yang relevan dengan dinamika zaman."
             </h3>
         </div>
     </div>
 
-    <!-- SLIDE 9: PILAR STRATEGIS COMBINED -->
+    <!-- SLIDE 9: PILAR STRATEGIS -->
     <div class="slide">
-        <h2 class="text-3xl font-black uppercase text-slate-900 mb-4 leading-none self-start">II. PILAR STRATEGIS (5 TAHUN)</h2>
-        <div class="grid-container grid-cols-2 lg:grid-cols-4">
-            <div class="card-pilar-block hover-expand">
+        <h2 class="text-2xl md:text-3xl font-black uppercase text-slate-900 mb-6 leading-none self-start px-4">II. PILAR STRATEGIS (5 TAHUN)</h2>
+        <div class="grid-container grid-cols-1 md:grid-cols-2 lg:grid-cols-4 px-4 w-full">
+            <div class="card-pilar-block hover-expand" onclick="openCustomModal('PILAR A: TATA KELOLA', 'Internalisasi AD/ART, digitalisasi 100%, pembentukan Ranting Khusus, dan revitalisasi Gedung Guru.')">
                 <h4>Pilar A: Tata Kelola</h4>
                 <ul>
-                    <li>Supremasi Konstitusi (AD/ART)</li>
-                    <li>Sinkronisasi Program Hirarkis</li>
-                    <li>Digitalisasi SIK PB PGRI 100%</li>
-                    <li>Ekspansi Ranting SMP & PAUD</li>
-                    <li>Revitalisasi Gedung Guru</li>
+                    <li>AD/ART Konstitusional</li>
+                    <li>Digitalisasi SIK 100%</li>
+                    <li>Ranting SMP & PAUD</li>
+                    <li>Gedung Guru Modern</li>
                 </ul>
             </div>
-            <div class="card-pilar-block hover-expand" style="border-color: #f59e0b;">
-                <h4 style="color: #d97706; border-color: #fbbf24;">Pilar B: Ekonomi</h4>
+            <div class="card-pilar-block hover-expand border-amber-400" onclick="openCustomModal('PILAR B: EKONOMI', 'Investasi Emas Dana Purnabakti sebagai perlindungan nilai ekonomi. Dana amanat tidak dipinjamkan.')">
+                <h4 class="text-amber-600 border-amber-200">Pilar B: Ekonomi</h4>
                 <ul>
-                    <li>Investasi Dana Purnabakti Emas</li>
-                    <li>Konversi Aset ke Logam Mulia</li>
-                    <li>Transparansi Keuangan Digital</li>
-                    <li>Prinsip Dana Amanat: Tidak Dipinjamkan</li>
+                    <li>Dana Purnabakti Emas</li>
+                    <li>Logam Mulia (Antam)</li>
+                    <li>Keuangan Digital</li>
+                    <li>Anti-Pinjam Dana Amanat</li>
                 </ul>
             </div>
-            <div class="card-pilar-block hover-expand">
+            <div class="card-pilar-block hover-expand" onclick="openCustomModal('PILAR C: KOMPETENSI', 'Pedagogi modern berbasis media digital dan AI, serta kultur Deep Learning.')">
                 <h4>Pilar C: Kompetensi</h4>
                 <ul>
                     <li>Kepemimpinan Reflektif</li>
-                    <li>Literasi Digital & Pedagogi AI</li>
-                    <li>Kultur Pembelajaran Mendalam</li>
-                    <li>Penguatan Komunitas APKS</li>
+                    <li>Literasi Digital & AI</li>
+                    <li>Kultur Deep Learning</li>
+                    <li>Komunitas APKS</li>
                 </ul>
             </div>
-            <div class="card-pilar-block hover-expand">
+            <div class="card-pilar-block hover-expand" onclick="openCustomModal('PILAR D: ADVOKASI', 'Menjaga marwah profesi guru melalui perlindungan hukum LKBH yang responsif.')">
                 <h4>Pilar D: Advokasi</h4>
                 <ul>
-                    <li>Perlindungan Hukum LKBH</li>
-                    <li>Kemitraan Strategis Muspika</li>
-                    <li>Marwah Profesi Guru</li>
-                    <li>Bantuan Hukum Responsif</li>
+                    <li>Perlindungan LKBH</li>
+                    <li>Kemitraan Muspika</li>
+                    <li>Marwah Profesi</li>
+                    <li>Bantuan Hukum Cepat</li>
                 </ul>
             </div>
         </div>
     </div>
 
-    <!-- SLIDE 10: INFOGRAPHIC ROADMAP -->
+    <!-- SLIDE 10: ROADMAP -->
     <div class="slide">
-        <h2 class="text-4xl font-black text-center mb-2 uppercase leading-none">Roadmap Strategis 2025-2030</h2>
-        <div class="roadmap-container">
+        <h2 class="text-3xl md:text-4xl font-black text-center mb-6 uppercase leading-none px-4">Roadmap Strategis</h2>
+        <div class="roadmap-container px-4">
             <div class="roadmap-line"></div>
             <div class="roadmap-progress"></div>
             <div class="roadmap-items">
-                <div class="roadmap-node active hover-expand">
+                <div class="roadmap-node active hover-expand" onclick="openCustomModal('2026: PONDASI', 'Workshop AD/ART, SIK Digital, dan Dana Emas.')">
                     <div class="node-content">
                         <h4>Pondasi</h4>
-                        <p>Fundamental & Digital</p>
+                        <p>Fundamental</p>
                     </div>
                     <div class="node-circle">26</div>
-                    <p class="text-sm font-black text-red-600">TAHUN 1</p>
                 </div>
-                <div class="roadmap-node hover-expand">
-                    <p class="text-sm font-black text-slate-400">TAHUN 2</p>
-                    <div class="node-circle">27</div>
+                <div class="roadmap-node hover-expand" onclick="openCustomModal('2027: AKSELERASI', 'LKO Ranting dan Media AI Classroom.')">
                     <div class="node-content">
                         <h4>Akselerasi</h4>
-                        <p>Penguatan Kapasitas</p>
+                        <p>Kapasitas</p>
                     </div>
+                    <div class="node-circle">27</div>
                 </div>
-                <div class="roadmap-node hover-expand">
+                <div class="roadmap-node hover-expand" onclick="openCustomModal('2028: MATURITAS', 'Reflective Teaching dan Unit Usaha Mandiri.')">
                     <div class="node-content">
                         <h4>Maturitas</h4>
-                        <p>Kematangan Program</p>
+                        <p>Kematangan</p>
                     </div>
                     <div class="node-circle">28</div>
-                    <p class="text-sm font-black text-slate-400">TAHUN 3</p>
                 </div>
-                <div class="roadmap-node hover-expand">
-                    <p class="text-sm font-black text-slate-400">TAHUN 4</p>
-                    <div class="node-circle">29</div>
+                <div class="roadmap-node hover-expand" onclick="openCustomModal('2029: EKSPANSI', 'Kebijakan Pendidikan dan Jejaring LKBH.')">
                     <div class="node-content">
                         <h4>Ekspansi</h4>
-                        <p>Dampak & Kebijakan</p>
+                        <p>Dampak</p>
                     </div>
+                    <div class="node-circle">29</div>
                 </div>
-                <div class="roadmap-node hover-expand">
+                <div class="roadmap-node hover-expand" onclick="openCustomModal('2030: LEGACY', 'Koncab XXIII dan Estafet Kepemimpinan.')">
                     <div class="node-content">
                         <h4>Legacy</h4>
-                        <p>Keberlanjutan</p>
+                        <p>Warisan</p>
                     </div>
                     <div class="node-circle">30</div>
-                    <p class="text-sm font-black text-slate-400">TAHUN 5</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- SLIDE 11: ETAPE RENCANA KERJA OPERASIONAL -->
+    <!-- SLIDE 11: ETAPE OPERASIONAL -->
     <div class="slide">
-        <h2 class="text-3xl font-black uppercase text-slate-900 mb-8 leading-none self-start">III. Etape Program Operasional</h2>
-        <div class="etape-container">
+        <h2 class="text-2xl md:text-3xl font-black uppercase text-slate-900 mb-6 md:mb-8 leading-none self-start px-4">III. Etape Program Operasional</h2>
+        <div class="etape-container px-4">
             <div class="etape-connector"></div>
             
-            <!-- Etape 1 -->
-            <div class="program-card hover-expand">
+            <div class="program-card hover-expand" onclick="openCustomModal('2026: PONDASI', 'Workshop AD/ART, SIK 100% Digital, Ranting SMP/PAUD, dan Simposium AI.')">
                 <div class="etape-number">ETAPE 1</div>
                 <div class="year-title text-red-600">2026</div>
                 <h5>TEMA: PONDASI</h5>
-                <p>• Workshop AD/ART<br>• SIK 100% Digital<br>• Ranting SMP/PAUD<br>• Simposium Digital & AI<br>• Inisiasi Dana Emas</p>
+                <p>• Workshop AD/ART<br>• SIK 100% Digital<br>• Ranting SMP/PAUD</p>
             </div>
 
-            <!-- Etape 2 -->
-            <div class="program-card secondary hover-expand">
+            <div class="program-card secondary hover-expand" onclick="openCustomModal('2027: AKSELERASI', 'LKO Pengurus Ranting, Digital AI Classroom, dan Audit Emas Fisik.')">
                 <div class="etape-number">ETAPE 2</div>
                 <div class="year-title">2027</div>
                 <h5>TEMA: AKSELERASI</h5>
-                <p>• LKO Pengurus Ranting<br>• Digital Classroom AI<br>• Audit Fisik Saldo Emas<br>• Porseni Guru Kecamatan</p>
+                <p>• LKO Ranting<br>• AI Classroom<br>• Audit Saldo Emas</p>
             </div>
 
-            <!-- Etape 3 -->
-            <div class="program-card hover-expand">
+            <div class="program-card hover-expand" onclick="openCustomModal('2028: MATURITAS', 'Layanan Surat Online, Reflective Forum, dan Unit Usaha Mandiri.')">
                 <div class="etape-number">ETAPE 3</div>
                 <div class="year-title text-red-600">2028</div>
                 <h5>TEMA: MATURITAS</h5>
-                <p>• Layanan Anggota Online<br>• Best Practice Forum<br>• Unit Usaha Mandiri<br>• Renovasi Gedung Guru</p>
+                <p>• Layanan Online<br>• Forum Refleksi<br>• Unit Usaha</p>
             </div>
 
-            <!-- Etape 4 -->
-            <div class="program-card secondary hover-expand">
+            <div class="program-card secondary hover-expand" onclick="openCustomModal('2029: EKSPANSI', 'Survei Kepuasan, Simposium Pendidikan, dan Advokasi Hukum.')">
                 <div class="etape-number">ETAPE 4</div>
                 <div class="year-title">2029</div>
                 <h5>TEMA: EKSPANSI</h5>
-                <p>• Survei Indeks Kepuasan<br>• Simposium Pendidikan<br>• Advokasi Hukum Terpadu<br>• Proyeksi Investasi Emas</p>
+                <p>• Survei Kepuasan<br>• Simposium Pendidikan<br>• Advokasi Hukum</p>
             </div>
 
-            <!-- Etape 5 -->
-            <div class="program-card hover-expand">
+            <div class="program-card hover-expand" onclick="openCustomModal('2030: LEGACY', 'Koncab XXIII, Laporan Pertanggungjawaban Digital, dan Buku Jejak Bakti.')">
                 <div class="etape-number">ETAPE 5</div>
                 <div class="year-title text-red-600">2030</div>
                 <h5>TEMA: LEGACY</h5>
-                <p>• Konferensi Cabang XXIII<br>• LPJ Transparan Digital<br>• Buku Jejak Bakti<br>• Estafet Kepemimpinan</p>
+                <p>• Koncab XXIII<br>• LPJ Digital<br>• Buku Jejak Bakti</p>
             </div>
         </div>
     </div>
 
     <!-- SLIDE 12: SAKTI -->
     <div class="slide">
-        <a href="https://edibrata.github.io/saktipgripdglg/" target="_blank" class="block w-full max-w-4xl no-underline text-current">
-            <div class="text-center hover-expand p-8 border-2 border-slate-100 rounded-[3rem] bg-slate-50 cursor-pointer">
-                <div class="flex justify-center gap-8 mb-8">
-                    <div class="w-40 h-40 bg-red-600 text-white rounded-3xl flex items-center justify-center text-7xl shadow-2xl">
+        <a href="https://edibrata.github.io/saktipgripdglg/" target="_blank" class="block w-full max-w-4xl no-underline text-current px-4">
+            <div class="text-center hover-expand p-6 md:p-8 border-2 border-slate-100 rounded-[2rem] md:rounded-[3rem] bg-slate-50 cursor-pointer">
+                <div class="flex justify-center gap-4 md:gap-8 mb-6 md:mb-8">
+                    <div class="w-24 h-24 md:w-40 md:h-40 bg-red-600 text-white rounded-xl md:rounded-3xl flex items-center justify-center text-4xl md:text-7xl shadow-2xl">
                         <i class="fas fa-file-invoice-dollar"></i>
                     </div>
-                    <div class="w-40 h-40 bg-slate-900 text-white rounded-3xl flex items-center justify-center text-7xl shadow-2xl">
+                    <div class="w-24 h-24 md:w-40 md:h-40 bg-slate-900 text-white rounded-xl md:rounded-3xl flex items-center justify-center text-4xl md:text-7xl shadow-2xl">
                         <i class="fas fa-laptop-code"></i>
                     </div>
                 </div>
-                <h1 class="text-7xl font-black text-slate-900 mb-6 leading-tight uppercase tracking-tighter">SAKTI</h1>
-                <p class="text-3xl font-extrabold text-red-600 mb-4 uppercase">Sistem Administrasi Keuangan dan Tata Informasi</p>
-                <div class="h-2 w-32 bg-slate-300 mx-auto mb-4 rounded-full"></div>
-                <p class="text-2xl font-black text-slate-500 uppercase tracking-widest">PGRI Kabupaten Pandeglang</p>
-                <p class="mt-4 text-sm font-bold text-slate-400 italic">Klik untuk membuka sistem</p>
+                <h1 class="text-5xl md:text-7xl font-black text-slate-900 mb-4 md:mb-6 leading-tight uppercase tracking-tighter">SAKTI</h1>
+                <p class="text-xl md:text-3xl font-extrabold text-red-600 mb-4 uppercase leading-tight">Sistem Administrasi Keuangan dan Tata Informasi</p>
+                <div class="h-1 w-20 md:w-32 bg-slate-300 mx-auto mb-4 rounded-full"></div>
+                <p class="text-md md:text-2xl font-black text-slate-500 uppercase tracking-widest">PGRI Kabupaten Pandeglang</p>
             </div>
         </a>
     </div>
 
     <!-- SLIDE 13: SOLIDARITAS -->
     <div class="slide">
-        <div class="text-center w-full">
-            <h1 class="text-[9rem] font-black text-slate-900 leading-none mb-2 uppercase tracking-tighter">SOLIDARITAS!</h1>
-            <div class="h-4 w-64 bg-red-600 mx-auto mb-6 rounded-full"></div>
-            <p class="text-3xl font-black text-slate-400 uppercase tracking-[0.5em]">Hidup Guru! Hidup PGRI!</p>
+        <div class="text-center w-full px-4">
+            <h1 class="text-5xl md:text-[9rem] font-black text-slate-900 leading-none mb-4 uppercase tracking-tighter">SOLIDARITAS!</h1>
+            <div class="h-2 md:h-4 w-40 md:w-64 bg-red-600 mx-auto mb-8 rounded-full"></div>
+            <p class="text-2xl md:text-3xl font-black text-slate-400 uppercase tracking-[0.3em] md:tracking-[0.5em]">Hidup Guru! Hidup PGRI!</p>
         </div>
     </div>
 
@@ -662,6 +818,9 @@
         const slides = document.querySelectorAll('.slide');
         const progress = document.getElementById('progress');
         const fsIcon = document.getElementById('fs-icon');
+
+        const modalOverlay = document.getElementById('modal-overlay');
+        const modalBody = document.getElementById('modal-body');
 
         function updateProgress() {
             const percent = ((currentSlide + 1) / slides.length) * 100;
@@ -686,6 +845,19 @@
             }
         }
 
+        /* Modal Functions */
+        function openCustomModal(title, text) {
+            modalBody.innerHTML = `
+                <h2 class="text-2xl md:text-4xl font-black text-red-600 uppercase mb-4 md:mb-6 border-b-2 md:border-b-4 border-slate-100 pb-2 md:pb-4 leading-tight">${title}</h2>
+                <p class="text-lg md:text-2xl font-bold text-slate-800 leading-relaxed">${text}</p>
+            `;
+            modalOverlay.style.display = 'flex';
+        }
+
+        function closeModal() {
+            modalOverlay.style.display = 'none';
+        }
+
         document.addEventListener('fullscreenchange', () => {
             if (document.fullscreenElement) {
                 fsIcon.classList.replace('fa-expand', 'fa-compress');
@@ -697,7 +869,26 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
             if (e.key === 'ArrowLeft') prevSlide();
+            if (e.key === 'Escape') closeModal();
         });
+
+        // Swipe support for mobile
+        let touchstartX = 0;
+        let touchendX = 0;
+
+        document.addEventListener('touchstart', e => {
+            touchstartX = e.changedTouches[0].screenX;
+        }, false);
+
+        document.addEventListener('touchend', e => {
+            touchendX = e.changedTouches[0].screenX;
+            handleGesture();
+        }, false);
+
+        function handleGesture() {
+            if (touchendX < touchstartX - 50) nextSlide();
+            if (touchendX > touchstartX + 50) prevSlide();
+        }
 
         updateProgress();
     </script>
